@@ -78,7 +78,6 @@ fi
 echo "TARring..."
 tar -cjvp --exclude $EXCLUDE -f $TAR $DIRS
 echo "Done."
-if [ 
 if [ $MAKE_LOCAL_COPY -eq 1 ] ; then
     echo "Making a local copy..."
     cp $TAR $HDBACKUP
@@ -92,7 +91,7 @@ else
 fi
 echo "Getting size..."
 ls -s $TAR > $SIZEFILE
-size_bytes=`cat $sizefile`
+size_bytes=`cat $SIZEFILE`
 if [ $size_bytes -gt $SIZE_IN_BYTES ] ; then
     echo "Size exceeds the configured limit!"
     exit 1
