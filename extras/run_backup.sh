@@ -19,7 +19,7 @@ MYSQL_PASS=secret
 
 #Credentials used to perform backup to the google cloud
 GOOGLE_USER=my.account@google.com
-GOOGLE_PASS
+GOOGLE_PASS=mypassword
 
 #If backup set is above this size (in megabytes), cancel upload 
 SIZE_WARNING=50 
@@ -92,14 +92,15 @@ fi
 echo "Getting size..."
 ls -s $TAR > $SIZEFILE
 size_bytes=`cat $SIZEFILE`
-if [ $size_bytes -gt $SIZE_IN_BYTES ] ; then
-    echo "Size exceeds the configured limit!"
-    exit 1
-fi
+#Not working yet, split the size_bytes to have an integer
+#if [ $size_bytes -gt $SIZE_IN_BYTES ] ; then
+#    echo "Size exceeds the configured limit!"
+#    exit 1
+#fi
 echo "Encrypting..."
 openssl enc -aes-256-cbc -salt -in $TAR -out $TAR.enc
 echo "Uploading offsite..."
-$(GFU_CMD) -u $GOOGLE_USER -p $GOOGLE_PASS -lf $TAR.enc
+${GFU_CMD} -u $GOOGLE_USER -p $GOOGLE_PASS -fl $TAR.enc
 echo "Deleting encrypted archive..."
 rm $TAR.enc
 echo "Done."
